@@ -22,9 +22,10 @@ function showError(input, message) {
 function showSuccess(input) {
     const formControl = input.parentElement;
     formControl.classList.add('success')
+
     setTimeout(() => {
         formControl.classList.remove('success')
-    }, 2000)
+    }, 3000)
 }
 
 function checkEmail(input) {
@@ -45,22 +46,6 @@ function checkRequired(inputArr) {
             successContainer.style.display = 'none';
         } else {
             showSuccess(input);
-
-            setTimeout(() => {
-                form.style.display = 'none';
-                successContainer.style.display = 'none'
-                loader.style.display = 'flex'
-
-                setTimeout(() => {
-                    form.style.display = 'none';
-                    successContainer.style.display = 'flex'
-                    loader.style.display = 'none'
-                }, 3000)
-            }, 100)
-
-            form.style.display = 'block';
-            successContainer.style.display = 'none'
-            loader.style.display = 'none'
         }
     });
 }
@@ -80,6 +65,20 @@ function checkLength(input, min, max) {
     } else {
         showSuccess(input);
     }
+}
+
+const submitForm = () => {
+    setTimeout(() => {
+        form.style.display = 'none';
+        successContainer.style.display = 'none'
+        loader.style.display = 'flex'
+
+        setTimeout(() => {
+            form.style.display = 'none';
+            successContainer.style.display = 'flex'
+            loader.style.display = 'none'
+        }, 3000)
+    }, 100)
 }
 
 function checkPasswordsMatch(input1, input2) {
@@ -102,7 +101,12 @@ form.addEventListener('submit', function (e) {
     checkLength(password, 6, 25);
     checkEmail(email);
     checkPasswordsMatch(password, password2);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (username !== '' && username.value.length > 3 && username.value.length <= 15 && re.test(email.value.trim()) && password.value === password2.value) {
+        submitForm();
+    }
 });
+
 
 prevBtn.addEventListener('click', () => {
     form.style.display = 'block';
